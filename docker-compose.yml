@@ -1,0 +1,46 @@
+services:
+  youzhong:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: youzhong:1.0.202611081807
+    container_name: youzhong
+    restart: unless-stopped # 开机/崩溃自动拉起
+    ports:
+      - "${PORT:-10078}:10078"
+    environment:
+      PORT: 10078
+      HOST: 0.0.0.0
+      TZ: Asia/Shanghai
+      DB_FILE: /data/youzhong.db
+      APK_DIR: /data/apk
+      APP_VERSION: 1.0.202611081807
+      # 子路径部署时改成 /youzhong（nginx 原样透传前缀）
+      URL_PREFIX: ${URL_PREFIX:-}
+      TRUST_PROXY: ${TRUST_PROXY:-false}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-}
+      SERVER_NAME: ${SERVER_NAME:-有终 · 自托管}
+      MAX_USERS: ${MAX_USERS:-10}
+      # 必改：渠道 Webhook 加密密钥（≥32 位随机串）
+      APP_SECRET: ${APP_SECRET:-change-me-to-a-long-random-string}
+      # 首次启动创建管理员；不填密码会在日志里打印随机密码一次
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      ADMIN_DISPLAY_NAME: ${ADMIN_DISPLAY_NAME:-管理员}
+      SEED_DEMO: ${SEED_DEMO:-false}
+    volumes:
+      - youzhong-data:/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:10078/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+volumes:
+  youzhong-data:
+    name: ${DATA_VOLUME:-youzhong-data}

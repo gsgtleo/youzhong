@@ -1,0 +1,64 @@
+node_modules/
+dist/
+build/
+.DS_Store
+*.log
+
+# 本机凭据与运行时数据（绝不入库）
+.env
+.env.*
+!.env.example
+.data/
+apps/server/.data/
+# 打包产物（自行构建）
+dist-packages/*
+!dist-packages/.gitkeep
+apps/desktop/release/
+playwright-report/
+test-results/
+
+# Android 构建与签名
+apps/android/.gradle/
+apps/android/.kotlin/
+apps/android/build/
+apps/android/app/build/
+apps/android/local.properties
+apps/android/keystore.properties
+apps/android/*.jks
+apps/android/*.keystore
+
+# 抓包 / 调试产物（不参与分发）
+capture/
+har/
+*.har
+
+# 部署现场私有文件（公钥 / nginx 真实配置 / 数据库，绝不入库）
+deploy/authorized_keys
+deploy/nginx.container.conf
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+
+# 本地协作与工作记录（不参与分发）
+.codebuddy/
+
+# 隐私与凭据（兜底，绝不入库）
+*.jks
+*.keystore
+*.pem
+*.p12
+keystore.properties
+
+# AI 生成/中间产物
+deepseek_svg_*.svg
+
+# 编辑器 / 工具缓存
+.idea/
+*.iml
+*.tsbuildinfo
+*.orig
+*.rej
+*.swp
+apps/web/dev-dist/

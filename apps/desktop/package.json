@@ -1,0 +1,102 @@
+{
+  "name": "@youzhong/desktop",
+  "version": "1.0.202611081807",
+  "private": true,
+  "license": "MIT",
+  "author": "有终 contributors",
+  "description": "有终桌面客户端（Windows / macOS / Linux，基于 Electron 复用网页端）",
+  "main": "src/main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "smoke": "electron . --smoke",
+    "build:web": "cross-env VITE_BASE_PATH=/ npm --prefix ../web run build",
+    "dist": "npm run build:web && electron-builder --win nsis portable --x64",
+    "dist:dir": "npm run build:web && electron-builder --dir",
+    "icon": "electron scripts/make-icon.cjs",
+    "dist:zip": "npm run build:web && electron-builder --win zip --x64"
+  },
+  "build": {
+    "appId": "app.youzhong.desktop",
+    "productName": "Youzhong",
+    "electronVersion": "33.4.11",
+    "npmRebuild": false,
+    "copyright": "MIT · 有终",
+    "directories": {
+      "output": "release",
+      "buildResources": "resources"
+    },
+    "files": [
+      "src/**/*",
+      "!scripts/**",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "../web/dist",
+        "to": "web"
+      },
+      {
+        "from": "resources/icon.png",
+        "to": "icon.png"
+      },
+      {
+        "from": "../../LICENSE",
+        "to": "LICENSE"
+      },
+      {
+        "from": "../../THIRD-PARTY-NOTICES.md",
+        "to": "THIRD-PARTY-NOTICES.md"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "artifactName": "youzhong-desktop-${version}-${arch}.${ext}",
+      "signAndEditExecutable": false,
+      "icon": "resources/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Youzhong",
+      "artifactName": "youzhong-desktop-${version}-setup.${ext}"
+    },
+    "portable": {
+      "artifactName": "youzhong-desktop-${version}-portable.${ext}"
+    },
+    "mac": {
+      "target": [
+        "dmg"
+      ],
+      "category": "public.app-category.productivity",
+      "icon": "resources/icon.png"
+    },
+    "linux": {
+      "target": [
+        "AppImage"
+      ],
+      "category": "Office",
+      "icon": "resources/icon.png"
+    }
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "33.4.11",
+    "electron-builder": "^25.1.8"
+  }
+}

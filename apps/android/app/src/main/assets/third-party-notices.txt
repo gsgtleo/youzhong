@@ -1,0 +1,11 @@
+This app includes the following third-party components:
+
+AndroidX (core-ktx, activity-compose, lifecycle-*, navigation-compose,
+datastore-preferences, work-runtime-ktx) - Apache License 2.0
+Jetpack Compose (ui, material3, material-icons-extended) - Apache License 2.0
+OkHttp / logging-interceptor - Apache License 2.0
+Retrofit / retrofit2-kotlinx-serialization-converter - Apache License 2.0
+kotlinx.serialization - Apache License 2.0
+
+Full license texts: https://www.apache.org/licenses/LICENSE-2.0
+See THIRD-PARTY-NOTICES.md in the project repository for details.

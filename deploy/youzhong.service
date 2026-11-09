@@ -1,0 +1,24 @@
+[Unit]
+Description=Youzhong self-hosted task server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=youzhong
+Group=youzhong
+WorkingDirectory=/opt/youzhong/apps/server
+EnvironmentFile=/etc/youzhong/youzhong.env
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/npm start
+Restart=always
+RestartSec=3
+StandardOutput=journal
+StandardError=journal
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/var/lib/youzhong
+
+[Install]
+WantedBy=multi-user.target

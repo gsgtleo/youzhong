@@ -1,0 +1,33 @@
+{
+  "name": "youzhong",
+  "private": true,
+  "version": "1.0.202611081807",
+  "license": "MIT",
+  "description": "有终：自托管的任务 / 日历 / 四象限管理器（网页 + 安卓 + 服务端）",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,green \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:web": "npm -w apps/web run dev",
+    "dev:server": "npm -w apps/server run dev",
+    "build": "npm -w apps/web run build",
+    "start": "npm -w apps/server run start",
+    "typecheck": "npm -w apps/web run typecheck && npm -w apps/server run typecheck",
+    "desktop": "npm -w @youzhong/desktop run start",
+    "desktop:build:web": "npm -w @youzhong/desktop run build:web",
+    "desktop:dist": "npm -w @youzhong/desktop run dist",
+    "desktop:dist:zip": "npm -w @youzhong/desktop run dist:zip",
+    "desktop:smoke": "npm -w @youzhong/desktop run smoke"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@electron/rebuild": "^3.7.1"
+  }
+}

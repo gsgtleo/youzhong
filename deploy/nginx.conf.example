@@ -1,0 +1,52 @@
+# 场景一：整站反代到根路径（推荐）
+# /etc/nginx/sites-available/youzhong
+server {
+    listen 80;
+    server_name youzhong.example.com;
+
+    client_max_body_size 8m;
+
+    location / {
+        proxy_pass http://127.0.0.1:10078;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 90s;
+    }
+
+    location /assets/ {
+        proxy_pass http://127.0.0.1:10078;
+        expires 7d;
+        add_header Cache-Control "public, immutable";
+    }
+}
+
+# ---------------------------------------------------------------
+# 场景二：子路径 /youzhong（例如 https://host:19993/youzhong）
+#
+# 前端必须用子路径构建：VITE_BASE_PATH=/youzhong/ npm run build
+# 服务端默认已识别 /youzhong 前缀（URL_PREFIX 可改），
+# 因此下面两种 proxy_pass 写法都能正常工作：
+#
+#   location /youzhong/ { proxy_pass http://127.0.0.1:10078; }        # 保留前缀
+#   location /youzhong/ { proxy_pass http://127.0.0.1:10078/; }       # 去掉前缀
+#
+# 注意：
+# 1) location 结尾的斜杠与 proxy_pass 结尾的斜杠组合决定是否去前缀；
+# 2) 不要只转发 /youzhong 而不转发 /youzhong/（结尾斜杠要一致）；
+# 3) 若同时需要根路径访问，可再复制一份 location / 的配置。
+#
+# server {
+#     listen 19993 ssl;
+#     server_name gsgtleo.yybosdns.com;
+#
+#     location /youzhong/ {
+#         proxy_pass http://127.0.0.1:10078;
+#         proxy_http_version 1.1;
+#         proxy_set_header Host $host;
+#         proxy_set_header X-Real-IP $remote_addr;
+#         proxy_set_header X-Forwarded-Proto $scheme;
+#     }
+# }

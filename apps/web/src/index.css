@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #f7f8fa;
+  --panel: #ffffff;
+  --subtle: #f1f3f7;
+  --hover: #f4f6fa;
+  --line: #e6e8ec;
+  --ink: #1f2329;
+  --ink-muted: #5a6474;
+  --ink-faint: #98a2b3;
+  /* 品牌色（主题色）通道值：由 lib/theme.ts 按「主题色 + 明暗」写入，这里是首屏兜底（青玉） */
+  --brand-rgb: 14 159 138;
+  --brand-600-rgb: 13 143 124;
+  --brand-700-rgb: 11 121 105;
+  --brand-100-rgb: 227 246 242;
+  --brand-50-rgb: 240 252 250;
+  --brand-glow: rgb(var(--brand-rgb) / 0.16);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #121316;
+  --panel: #1a1c21;
+  --subtle: #23252b;
+  --hover: #24262c;
+  --line: #2c2f36;
+  --ink: #e6e8ec;
+  --ink-muted: #9ba3b0;
+  --ink-faint: #6b7381;
+  /* 深色模式兜底色：JS 尚未接管时也能显示提亮后的主色 */
+  --brand-rgb: 47 179 161;
+  --brand-600-rgb: 41 158 142;
+  --brand-700-rgb: 34 131 118;
+  --brand-100-rgb: 26 54 50;
+  --brand-50-rgb: 23 39 37;
+  --brand-glow: rgb(var(--brand-rgb) / 0.22);
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-app text-ink font-sans antialiased;
+    font-size: 14px;
+    line-height: 1.5;
+    overscroll-behavior-y: none;
+  }
+
+  ::selection {
+    background: rgb(var(--brand-rgb) / 0.2);
+  }
+
+  input,
+  textarea,
+  select {
+    @apply bg-transparent outline-none;
+    font: inherit;
+    color: inherit;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    @apply text-faint;
+  }
+
+  button {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--brand-rgb) / 0.55);
+    outline-offset: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(148, 158, 174, 0.32);
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 158, 174, 0.55);
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .surface-card {
+    @apply rounded-2xl border border-line bg-panel shadow-card;
+  }
+
+  .hover-row {
+    @apply transition-colors duration-150;
+  }
+
+  .hover-row:hover {
+    background: var(--hover);
+  }
+
+  .tag-chip {
+    @apply inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-2xs font-medium;
+  }
+
+  .section-label {
+    @apply px-2 text-2xs font-semibold uppercase tracking-[0.14em] text-faint;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .brand-gradient {
+    background-image: linear-gradient(
+      135deg,
+      rgb(var(--brand-rgb)) 0%,
+      rgb(var(--brand-600-rgb)) 55%,
+      rgb(var(--brand-700-rgb)) 100%
+    );
+  }
+
+  .mesh-bg {
+    background-image:
+      radial-gradient(900px 420px at 8% -8%, rgb(var(--brand-rgb) / 0.1), transparent 62%),
+      radial-gradient(700px 380px at 96% 4%, rgba(139, 92, 246, 0.08), transparent 58%);
+  }
+
+  .drag-ghost {
+    @apply scale-[1.02] shadow-drag;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+@keyframes ring-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgb(var(--brand-rgb) / 0.35);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgb(var(--brand-rgb) / 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgb(var(--brand-rgb) / 0);
+  }
+}
+
+.ring-pulse {
+  animation: ring-pulse 1.8s ease-out infinite;
+}
