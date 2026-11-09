@@ -123,15 +123,17 @@ docs/logo.svg  项目图标（SVG 源文件）
 scripts/       本地启动、发布产物上传
 ```
 
+**每个文件的用途**：见 [docs/FILE-GUIDE.md](docs/FILE-GUIDE.md)（按目录逐条说明仓库全部 177 个文件，并列出哪些文件故意不入库）。
+
 **仓库内容（哪些进版本库）**
 
-公开仓库只放源码、文档、配置模板与图标（约 170 个文件、1.2 MB），其余一律由 `.gitignore` 排除。
+公开仓库只放源码、文档、配置模板与图标（177 个文件、约 1.2 MB），其余一律由 `.gitignore` 排除。
 
 | 纳入 | 说明 |
 | --- | --- |
 | `apps/`、`packages/` | 全部源码（网页、服务端、安卓、桌面、共享包） |
 | `deploy/`、`docker/`、`Dockerfile`、`docker-compose.yml` | 部署与镜像构建 |
-| `docs/` | 接口文档、隐私说明、图标源文件 |
+| `docs/` | 接口文档、隐私说明、逐文件说明（`FILE-GUIDE.md`）、图标源文件 |
 | `scripts/` | 本地启动、发布产物上传 |
 | `package.json`、`package-lock.json`、`tsconfig.base.json`、`.nvmrc` | 工程配置 |
 | `.env.example` | 配置模板（只有占位值） |
